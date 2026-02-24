@@ -4,6 +4,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     git \
     unzip \
     libzip-dev \
+    libonig-dev \
     libpng-dev \
     libjpeg62-turbo-dev \
     libfreetype6-dev \
