@@ -97,7 +97,7 @@
                                     <div class="mt-4">
                                         <div class="row justify-content-between align-items-center">
                                             <div class="col-6 text-center">
-                                                <span class="d-block font-bold mb-0">{{!empty($user->currentPlan)?$user->currentPlan->name:''}}</span>
+                                                <span class="d-block font-bold mb-0">{{ !empty($user->currentPlan) ? $user->currentPlan->name : '' }}</span>
                                             </div>
                                             <div class="col-6 text-center Id ">
                                                 <a href="#" data-url="{{ route('plan.upgrade',$user->id) }}" data-size="lg" data-ajax-popup="true" class="btn btn-outline-primary"
@@ -166,13 +166,13 @@
                                                 <div class="card-body p-3">
                                                     <div class="row">
                                                         <div class="col-4">
-                                                            <p class="text-muted text-sm mb-0" data-bs-toggle="tooltip" title="{{__('Users')}}"><i class="ti ti-users card-icon-text-space"></i>{{$user->totalCompanyUser($user->id)}}</p>
+                                                            <p class="text-muted text-sm mb-0" data-bs-toggle="tooltip" title="{{__('Users')}}"><i class="ti ti-users card-icon-text-space"></i>{{ $companyUserCounts[$user->id] ?? 0 }}</p>
                                                         </div>
                                                         <div class="col-4">
-                                                            <p class="text-muted text-sm mb-0" data-bs-toggle="tooltip" title="{{__('Customers')}}"><i class="ti ti-users card-icon-text-space"></i>{{$user->totalCompanyCustomer($user->id)}}</p>
+                                                            <p class="text-muted text-sm mb-0" data-bs-toggle="tooltip" title="{{__('Customers')}}"><i class="ti ti-users card-icon-text-space"></i>{{ $companyCustomerCounts[$user->id] ?? 0 }}</p>
                                                         </div>
                                                         <div class="col-4">
-                                                            <p class="text-muted text-sm mb-0" data-bs-toggle="tooltip" title="{{__('Vendors')}}"><i class="ti ti-users card-icon-text-space"></i>{{$user->totalCompanyVender($user->id)}}</p>
+                                                            <p class="text-muted text-sm mb-0" data-bs-toggle="tooltip" title="{{__('Vendors')}}"><i class="ti ti-users card-icon-text-space"></i>{{ $companyVenderCounts[$user->id] ?? 0 }}</p>
                                                         </div>
                                                     </div>
                                                 </div>

@@ -37,9 +37,13 @@ class UserController extends Controller
             $featureSettingsByCompany = [];
             if(\Auth::user()->type == 'super admin')
             {
-                $users = User::where('created_by', '=', $user->creatorId())->where('type', '=', 'company')->get();
+                $users = User::with('currentPlan:id,name')
+                    ->where('created_by', '=', $user->creatorId())
+                    ->where('type', '=', 'company')
+                    ->orderByDesc('id')
+                    ->paginate(24);
 
-                $companyIds = $users->pluck('id')->all();
+                $companyIds = $users->getCollection()->pluck('id')->all();
                 if(!empty($companyIds))
                 {
                     $rows = DB::table('settings')
@@ -63,13 +67,36 @@ class UserController extends Controller
                         $featureSettingsByCompany[$row->created_by][$row->name] = $row->value;
                     }
                 }
+
+                $companyUserCounts = User::whereIn('created_by', $companyIds)
+                    ->select('created_by', DB::raw('COUNT(*) as total'))
+                    ->groupBy('created_by')
+                    ->pluck('total', 'created_by')
+                    ->toArray();
+
+                $companyCustomerCounts = DB::table('customers')
+                    ->whereIn('created_by', $companyIds)
+                    ->select('created_by', DB::raw('COUNT(*) as total'))
+                    ->groupBy('created_by')
+                    ->pluck('total', 'created_by')
+                    ->toArray();
+
+                $companyVenderCounts = DB::table('venders')
+                    ->whereIn('created_by', $companyIds)
+                    ->select('created_by', DB::raw('COUNT(*) as total'))
+                    ->groupBy('created_by')
+                    ->pluck('total', 'created_by')
+                    ->toArray();
             }
             else
             {
-                $users = User::where('created_by', '=', $user->creatorId())->where('type', '!=', 'client')->get();
+                $users = User::where('created_by', '=', $user->creatorId())->where('type', '!=', 'client')->orderByDesc('id')->paginate(24);
+                $companyUserCounts = [];
+                $companyCustomerCounts = [];
+                $companyVenderCounts = [];
             }
 
-            return view('user.index', compact('users', 'featureSettingsByCompany'));
+            return view('user.index', compact('users', 'featureSettingsByCompany', 'companyUserCounts', 'companyCustomerCounts', 'companyVenderCounts'));
         }
         else
         {
