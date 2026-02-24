@@ -191,6 +191,8 @@ Route::get('/home', [DashboardController::class, 'account_dashboard_index'])->na
 
 Route::post('register', [RegisteredUserController::class, 'store'])->name('register.store');
 Route::get('/login/{lang?}', [AuthenticatedSessionController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [AuthenticatedSessionController::class, 'store'])->middleware(['guest', 'XSS'])->name('login.submit');
+Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->middleware(['auth', 'XSS'])->name('logout');
 
 ///copy link
 Route::get('/customer/invoice/{id}/', [InvoiceController::class, 'invoiceLink'])->name('invoice.link.copy');
@@ -1558,4 +1560,3 @@ Route::group(['middleware' => ['verified']], function () {
 });
 
 Route::any('/cookie-consent', [SystemController::class,'CookieConsent'])->name('cookie-consent');
-
