@@ -2,7 +2,7 @@
 @php
     use App\Models\Utility;
       //  $logo=asset(Storage::url('uploads/logo/'));
-           $logo=\App\Models\Utility::get_file('uploads/logo');
+           $logo = asset('uploads/logo');
 
         $company_logo=Utility::getValByName('company_logo');
         $settings = Utility::settings();
