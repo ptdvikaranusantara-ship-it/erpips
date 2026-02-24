@@ -26,4 +26,4 @@ RUN mkdir -p storage/framework/cache storage/framework/sessions storage/framewor
 
 EXPOSE 8080
 
-CMD ["sh", "-lc", "php artisan optimize:clear && php artisan migrate --force && php artisan storage:link || true; php -S 0.0.0.0:${PORT:-8080} -t public"]
+CMD ["sh", "-lc", "php artisan optimize:clear && php artisan migrate --force && php artisan key:generate --show && php artisan storage:link || true; php -S 0.0.0.0:${PORT:-8080} -t public"]
