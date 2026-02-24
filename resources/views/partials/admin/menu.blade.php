@@ -24,11 +24,11 @@
 {{--                <img src="{{ asset(Storage::url('uploads/logo/'.$logo)) }}" alt="{{ env('APP_NAME') }}" class="logo logo-lg" />--}}
 
                 @if($mode_setting['cust_darklayout'] && $mode_setting['cust_darklayout'] == 'on' )
-                    <img src="{{ $logo . '/' . (isset($company_logos) && !empty($company_logos) ? $company_logos : 'logo-dark.png') }}"
-                         alt="{{ config('app.name', 'ERPGo-SaaS') }}" class="logo logo-lg">
+                    <img src="{{ $logo . '/' . (isset($company_logos) && !empty($company_logos) ? $company_logos : 'erpips.png') }}"
+                         alt="{{ config('app.name', 'ERPIPS') }}" class="logo logo-lg">
                 @else
-                    <img src="{{ $logo . '/' . (isset($company_logo) && !empty($company_logo) ? $company_logo : 'logo-dark.png') }}"
-                         alt="{{ config('app.name', 'ERPGo-SaaS') }}" class="logo logo-lg">
+                    <img src="{{ $logo . '/' . (isset($company_logo) && !empty($company_logo) ? $company_logo : 'erpips.png') }}"
+                         alt="{{ config('app.name', 'ERPIPS') }}" class="logo logo-lg">
                 @endif
 
             </a>

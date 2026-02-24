@@ -35,7 +35,7 @@
     <meta name="description" content="{{ $metadesc }}">
 
     <link rel="icon"
-          href="{{ $logo.'/'.($company_favicon ?: 'favicon.png') }}"
+          href="{{ $logo.'/'.($company_favicon ?: 'favicon.svg') }}"
           type="image/x-icon"/>
 
     <!-- Fonts -->

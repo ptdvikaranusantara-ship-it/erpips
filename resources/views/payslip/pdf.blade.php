@@ -8,7 +8,7 @@
 <div class="card bg-none card-box">
     <div class="card-body">
         <div class="invoice-number">
-            <img src="{{$logo.'/'.(isset($company_logo) && !empty($company_logo)?$company_logo:'logo-dark.png')}}" width="120px;">
+            <img src="{{$logo.'/'.(isset($company_logo) && !empty($company_logo)?$company_logo:'erpips.png')}}" width="120px;">
         </div>
         <div class="text-end">
             <a href="#" class="btn btn-sm btn-primary" onclick="saveAsPDF()"><span class="ti ti-download"></span></a>

@@ -22,6 +22,10 @@
     @endcan
 @endsection
 @section('content')
+    @php
+        $canEditUser = Gate::check('edit user');
+        $canDeleteUser = Gate::check('delete user');
+    @endphp
     <div class="row">
         <div class="col-xxl-12">
             <div class="row">
@@ -38,7 +42,7 @@
                                 </div>
 
 
-                                @if(Gate::check('edit user') || Gate::check('delete user'))
+                                @if($canEditUser || $canDeleteUser)
                                     <div class="card-header-right">
                                         <div class="btn-group card-option">
                                             @if($user->is_active==1)
@@ -50,21 +54,21 @@
 
                                                 <div class="dropdown-menu dropdown-menu-end">
 
-                                                    @can('edit user')
+                                                    @if($canEditUser)
                                                         <a href="#!" data-size="lg" data-url="{{ route('users.edit',$user->id) }}" data-ajax-popup="true" class="dropdown-item" data-bs-original-title="{{__('Edit User')}}">
                                                             <i class="ti ti-pencil"></i>
                                                             <span>{{__('Edit')}}</span>
                                                         </a>
-                                                    @endcan
+                                                    @endif
 
-                                                    @can('delete user')
+                                                    @if($canDeleteUser)
                                                         {!! Form::open(['method' => 'DELETE', 'route' => ['users.destroy', $user['id']],'id'=>'delete-form-'.$user['id']]) !!}
                                                         <a href="#!"  class="dropdown-item bs-pass-para">
                                                             <i class="ti ti-archive"></i>
                                                             <span> @if($user->delete_status!=0){{__('Delete')}} @else {{__('Restore')}}@endif</span>
                                                         </a>
                                                         {!! Form::close() !!}
-                                                    @endcan
+                                                    @endif
 
                                                     <a href="#!" data-url="{{route('users.reset',\Crypt::encrypt($user->id))}}" data-ajax-popup="true" data-size="md" class="dropdown-item" data-bs-original-title="{{__('Reset Password')}}">
                                                         <i class="ti ti-adjustments"></i>
@@ -184,6 +188,9 @@
                         </div>
                     </div>
                 @endforeach
+            </div>
+            <div class="mt-3">
+                {{ $users->links() }}
             </div>
         </div>
     </div>

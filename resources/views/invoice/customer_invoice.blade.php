@@ -39,7 +39,7 @@
     <meta property="twitter:description" content="{{$metsdesc}}">
     <meta property="twitter:image" content="{{$meta_image.$meta_logo}}">
 
-    <link rel="icon" href="{{$logo.'/'.(isset($company_favicon) && !empty($company_favicon)?$company_favicon:'favicon.png')}}" type="image" sizes="16x16">
+    <link rel="icon" href="{{$logo.'/'.(isset($company_favicon) && !empty($company_favicon)?$company_favicon:'favicon.svg')}}" type="image" sizes="16x16">
 
   <link rel="stylesheet" href="{{ asset('assets/css/plugins/main.css') }}">
 

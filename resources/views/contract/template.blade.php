@@ -2,7 +2,7 @@
 @php
 $logo=\App\Models\Utility::get_file('uploads/logo/');
 $dark_logo    = Utility::getValByName('dark_logo');
-$img = asset($logo . '/' . (isset($dark_logo) && !empty($dark_logo) ? $dark_logo : 'logo-dark.png'));
+$img = asset($logo . '/' . (isset($dark_logo) && !empty($dark_logo) ? $dark_logo : 'erpips.png'));
 $settings    = Utility::settings();
 @endphp
 

@@ -23,7 +23,7 @@
         - {{ __('POS') }}</title>
 
     <link rel="icon"
-          href="{{ asset(Storage::url('uploads/logo/')) . '/' . (isset($companySettings['company_favicon']) && !empty($companySettings['company_favicon']) ? $companySettings['company_favicon']->value : 'favicon.png') }}"
+          href="{{ asset(Storage::url('uploads/logo/')) . '/' . (isset($companySettings['company_favicon']) && !empty($companySettings['company_favicon']) ? $companySettings['company_favicon']->value : 'favicon.svg') }}"
           type="image" sizes="16x16">
     <link rel="stylesheet" href="{{ asset('assets/fonts/tabler-icons.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/site.css') }}" id="stylesheet">

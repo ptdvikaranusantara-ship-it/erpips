@@ -30,7 +30,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Favicon icon -->
 
-    <link rel="icon" href="{{$logo.'/'.(isset($company_favicon) && !empty($company_favicon)?$company_favicon:'favicon.png')}}" type="image/x-icon" />
+    <link rel="icon" href="{{$logo.'/'.(isset($company_favicon) && !empty($company_favicon)?$company_favicon:'favicon.svg')}}" type="image/x-icon" />
 @stack('head')
 <!-- for calender-->
     <link rel="stylesheet" href="{{ asset('assets/css/plugins/main.css') }}">

@@ -42,10 +42,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 {{--    <meta name="url" content="{{ url('').'/'.config('chatify.path') }}" data-user="{{ Auth::user()->id }}">--}}
-    <link rel="icon" href="{{$logo.'/'.(isset($company_favicon) && !empty($company_favicon)?$company_favicon:'favicon.png')}}" type="image" sizes="16x16">
+    <link rel="icon" href="{{$logo.'/'.(isset($company_favicon) && !empty($company_favicon)?$company_favicon:'favicon.svg')}}" type="image" sizes="16x16">
 
     <!-- Favicon icon -->
-    <link rel="icon" href="{{ asset('assets/images/favicon.svg') }}" type="image/x-icon"/>
+    <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/x-icon"/>
 
     <link rel="stylesheet" href="{{ asset('assets/css/plugins/style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/plugins/animate.min.css') }}">
@@ -74,7 +74,7 @@
                     <div class="col-sm-8 col-lg-5">
                         <div class="row justify-content-center mb-3">
                             <a class="navbar-brand" href="#">
-                                <img src="{{asset(Storage::url('uploads/logo/logo-dark.png'))}}" class="navbar-brand-img big-logo">
+                                <img src="{{asset(Storage::url('uploads/logo/erpips.png'))}}" class="navbar-brand-img big-logo">
                             </a>
                         </div>
                         <div class="card shadow zindex-100 mb-0">

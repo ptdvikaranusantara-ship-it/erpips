@@ -18,21 +18,27 @@ use Twilio\Rest\Client;
 
 class Utility extends Model
 {
-    public static function settings()
-    {
-        $data = DB::table('settings');
+    protected static $settingsCache = [];
 
-        if(\Auth::check())
+    protected static $featureSettingsCache = [];
+
+    public static function settings($createdBy = null)
+    {
+        if($createdBy === null)
         {
-            $data=$data->where('created_by','=',\Auth::user()->creatorId())->get();
-            if(count($data)==0){
-                $data =DB::table('settings')->where('created_by', '=', 1 )->get();
-            }
+            $createdBy = \Auth::check() ? \Auth::user()->creatorId() : 1;
         }
-        else
+
+        $cacheKey = (int) $createdBy;
+        if(isset(self::$settingsCache[$cacheKey]))
         {
-            $data->where('created_by', '=', 1);
-            $data = $data->get();
+            return self::$settingsCache[$cacheKey];
+        }
+
+        $data = DB::table('settings')->where('created_by', '=', $createdBy)->get();
+        if($data->count() == 0 && $createdBy != 1)
+        {
+            $data = DB::table('settings')->where('created_by', '=', 1)->get();
         }
 
 
@@ -98,9 +104,9 @@ class Utility extends Model
             "email_verification" => "on",
             'cookie_text' => 'We use cookies to ensure that we give you the best experience on our website. If you continue to use this site we will assume that you are happy with it.
 ',
-            "company_logo_light" => "logo-light.png",
-            "company_logo_dark" =>  "logo-dark.png",
-            "company_favicon" => "favicon.png",
+            "company_logo_light" => "erpips.png",
+            "company_logo_dark" =>  "erpips.png",
+            "company_favicon" => "favicon.svg",
             "cust_theme_bg" => "on",
             "cust_darklayout" => "off",
             "color" => "",
@@ -198,6 +204,8 @@ class Utility extends Model
             $settings[$row->name] = $row->value;
         }
 
+        self::$settingsCache[$cacheKey] = $settings;
+
         return $settings;
     }
 
@@ -269,9 +277,9 @@ class Utility extends Model
             "email_verification" => "on",
             'cookie_text' => 'We use cookies to ensure that we give you the best experience on our website. If you continue to use this site we will assume that you are happy with it.
 ',
-            "company_logo_light" => "logo-light.png",
-            "company_logo_dark" =>  "logo-dark.png",
-            "company_favicon" => "favicon.png",
+            "company_logo_light" => "erpips.png",
+            "company_logo_dark" =>  "erpips.png",
+            "company_favicon" => "favicon.svg",
             "cust_theme_bg" => "on",
             "cust_darklayout" => "off",
             "color" => "",
@@ -2832,14 +2840,14 @@ class Utility extends Model
             $is_dark_mode = $setting['cust_darklayout'];
             // dd($is_dark_mode);
             if($is_dark_mode == 'on'){
-                return 'logo-light.png';
+                return 'erpips.png';
             }else{
-                return 'logo-dark.png';
+                return 'erpips.png';
             }
 
         }
         else {
-            return 'logo-dark.png';
+            return 'erpips.png';
         }
 
     }
@@ -3496,12 +3504,10 @@ class Utility extends Model
             $companyId = Auth::check() ? Auth::user()->creatorId() : 1;
         }
 
-        $keys = ['feature_account', 'feature_hrm', 'feature_crm', 'feature_project', 'feature_pos'];
-        $data = DB::table('settings')->where('created_by', $companyId)->whereIn('name', $keys)->get();
-
-        if($data->count() == 0 && $companyId != 1)
+        $cacheKey = (int) $companyId;
+        if(isset(self::$featureSettingsCache[$cacheKey]))
         {
-            $data = DB::table('settings')->where('created_by', 1)->whereIn('name', $keys)->get();
+            return self::$featureSettingsCache[$cacheKey];
         }
 
         $settings = [
@@ -3512,10 +3518,14 @@ class Utility extends Model
             'feature_pos' => 'on',
         ];
 
-        foreach($data as $row)
-        {
-            $settings[$row->name] = $row->value;
-        }
+        $companySettings = self::settings($companyId);
+        $settings['feature_account'] = $companySettings['feature_account'] ?? 'on';
+        $settings['feature_hrm'] = $companySettings['feature_hrm'] ?? 'on';
+        $settings['feature_crm'] = $companySettings['feature_crm'] ?? 'on';
+        $settings['feature_project'] = $companySettings['feature_project'] ?? 'on';
+        $settings['feature_pos'] = $companySettings['feature_pos'] ?? 'on';
+
+        self::$featureSettingsCache[$cacheKey] = $settings;
 
         return $settings;
     }
@@ -3594,4 +3604,3 @@ class Utility extends Model
 
 
 }
-

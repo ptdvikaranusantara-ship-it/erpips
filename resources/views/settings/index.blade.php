@@ -327,7 +327,7 @@
                                         <div class="card-body pt-0">
                                             <div class="setting-card">
                                                 <div class="logo-content mt-4">
-                                                    <img id="image" src="{{$logo.'/'.(isset($logo_dark) && !empty($logo_dark)?$logo_dark:'logo-dark.png')}}"
+                                                    <img id="image" src="{{$logo.'/'.(isset($logo_dark) && !empty($logo_dark)?$logo_dark:'erpips.png')}}"
                                                          class="big-logo">
                                                 </div>
                                                 <div class="choose-files mt-5">
@@ -357,7 +357,7 @@
                                         <div class="card-body pt-0">
                                             <div class=" setting-card">
                                                 <div class="logo-content mt-4">
-                                                    <img id="image1" src="{{$logo.'/'.(isset($logo_light) && !empty($logo_light)?$logo_light:'logo-light.png')}}"
+                                                    <img id="image1" src="{{$logo.'/'.(isset($logo_light) && !empty($logo_light)?$logo_light:'erpips.png')}}"
                                                          class="big-logo img_setting">
                                                 </div>
                                                 <div class="choose-files mt-5">
@@ -387,7 +387,7 @@
                                         <div class="card-body pt-0">
                                             <div class=" setting-card">
                                                 <div class="logo-content mt-4">
-                                                    <img id="image2" src="{{$logo.'/'.(isset($company_favicon) && !empty($company_favicon)?$company_favicon:'favicon.png')}}" width="50px"
+                                                    <img id="image2" src="{{$logo.'/'.(isset($company_favicon) && !empty($company_favicon)?$company_favicon:'favicon.svg')}}" width="50px"
                                                          class="img_setting">
                                                 </div>
                                                 <div class="choose-files mt-5">

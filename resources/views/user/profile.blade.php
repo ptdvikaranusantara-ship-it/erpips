@@ -1,9 +1,10 @@
 @extends('layouts.admin')
 @php
     $profile=\App\Models\Utility::get_file('uploads/avatar/');
+    $isCompanyProfile = \Auth::user()->type === 'company';
 @endphp
 @section('page-title')
-    {{__('Profile Account')}}
+    {{ $isCompanyProfile ? __('Company Profile') : __('Profile Account') }}
 @endsection
 @push('script-page')
     <script>
@@ -28,16 +29,37 @@
         <div class="col-xl-3">
             <div class="card sticky-top" style="top:30px">
                 <div class="list-group list-group-flush" id="useradd-sidenav">
-                    <a href="#personal_info" class="list-group-item list-group-item-action border-0">{{__('Personal Info')}} <div class="float-end"><i class="ti ti-chevron-right"></i></div></a>
-
-                    <a href="#change_password" class="list-group-item list-group-item-action border-0">{{__('Change Password')}}<div class="float-end"><i class="ti ti-chevron-right"></i></div></a>
+                    <a href="#profile_overview" class="list-group-item list-group-item-action border-0">{{__('Overview')}} <div class="float-end"><i class="ti ti-chevron-right"></i></div></a>
+                    <a href="#personal_info" class="list-group-item list-group-item-action border-0">{{ $isCompanyProfile ? __('Company Information') : __('Personal Info') }} <div class="float-end"><i class="ti ti-chevron-right"></i></div></a>
+                    <a href="#change_password" class="list-group-item list-group-item-action border-0">{{__('Security')}}<div class="float-end"><i class="ti ti-chevron-right"></i></div></a>
                 </div>
             </div>
         </div>
         <div class="col-xl-9">
+            <div id="profile_overview" class="card">
+                <div class="card-body">
+                    <div class="d-flex flex-wrap align-items-center justify-content-between">
+                        <div class="d-flex align-items-center">
+                            <img src="{{ !empty($userDetail->avatar) ? $profile . $userDetail->avatar : $profile . 'avatar.png' }}"
+                                 alt="{{ $userDetail->name }}"
+                                 class="rounded-circle me-3"
+                                 style="width:64px;height:64px;object-fit:cover;">
+                            <div>
+                                <h5 class="mb-1">{{ $userDetail->name }}</h5>
+                                <p class="text-muted mb-0">{{ $userDetail->email }}</p>
+                            </div>
+                        </div>
+                        <div class="text-md-end mt-3 mt-md-0">
+                            <span class="badge bg-primary p-2 px-3 rounded">
+                                {{ $isCompanyProfile ? __('ERPIPS Company') : __('ERPIPS User') }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div id="personal_info" class="card">
                 <div class="card-header">
-                    <h5>{{__('Personal Info')}}</h5>
+                    <h5>{{ $isCompanyProfile ? __('Company Information') : __('Personal Info') }}</h5>
                 </div>
                 <div class="card-body">
                     {{Form::model($userDetail,array('route' => array('update.account'), 'method' => 'post', 'enctype' => "multipart/form-data"))}}
@@ -45,7 +67,7 @@
                         <div class="row">
                             <div class="col-lg-6 col-sm-6">
                                 <div class="form-group">
-                                    <label class="col-form-label text-dark">{{__('Name')}}</label>
+                                    <label class="col-form-label text-dark">{{ $isCompanyProfile ? __('Company Name') : __('Name') }}</label>
                                     <input class="form-control @error('name') is-invalid @enderror" name="name" type="text" id="name" placeholder="{{ __('Enter Your Name') }}" value="{{ $userDetail->name }}" required autocomplete="name">
                                     @error('name')
                                     <span class="invalid-feedback text-danger text-xs" role="alert">{{ $message }}</span>
@@ -78,17 +100,17 @@
 
                             </div>
                             <div class="col-lg-12 text-end">
-                                <input type="submit" value="{{__('Save Changes')}}" class="btn btn-print-invoice  btn-primary m-r-10">
+                                <input type="submit" value="{{__('Save Profile')}}" class="btn btn-print-invoice btn-primary m-r-10">
                             </div>
                         </div>
-                    </form>
+                    {!! Form::close() !!}
 
                 </div>
 
             </div>
             <div id="change_password" class="card">
                 <div class="card-header">
-                    <h5>{{__('Change Password')}}</h5>
+                    <h5>{{__('Security Settings')}}</h5>
                 </div>
                 <div class="card-body">
                     <form method="post" action="{{route('update.password')}}">
@@ -114,7 +136,7 @@
                                 <input class="form-control @error('password_confirmation') is-invalid @enderror" name="password_confirmation" type="password" required autocomplete="new-password" id="password_confirmation" placeholder="{{ __('Enter Your Password') }}">
                             </div>
                             <div class="col-lg-12 text-end">
-                                <input type="submit" value="{{__('Change Password')}}" class="btn btn-print-invoice  btn-primary m-r-10">
+                                <input type="submit" value="{{__('Update Password')}}" class="btn btn-print-invoice btn-primary m-r-10">
                             </div>
                         </div>
                     </form>

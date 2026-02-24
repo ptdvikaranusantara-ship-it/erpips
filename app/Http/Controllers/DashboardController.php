@@ -50,6 +50,33 @@ use Illuminate\Support\Facades\Validator;
 
 class DashboardController extends Controller
 {
+    protected function redirectToAvailableDashboard($currentRoute = null)
+    {
+        if(!Auth::check())
+        {
+            return redirect('login');
+        }
+
+        $user = Auth::user();
+        $candidates = [
+            'dashboard' => ($user->can('show account dashboard') && $user->show_account() == 1),
+            'hrm.dashboard' => ($user->can('show hrm dashboard') && $user->show_hrm() == 1),
+            'project.dashboard' => ($user->can('show project dashboard') && $user->show_project() == 1),
+            'crm.dashboard' => ($user->can('show crm dashboard') && $user->show_crm() == 1),
+            'pos.dashboard' => ($user->can('show pos dashboard') && $user->show_pos() == 1),
+        ];
+
+        foreach($candidates as $route => $allowed)
+        {
+            if($route !== $currentRoute && $allowed)
+            {
+                return redirect()->route($route);
+            }
+        }
+
+        return redirect()->route('client.dashboard.view');
+    }
+
     /**
      * Create a new controller instance.
      *
@@ -142,8 +169,7 @@ class DashboardController extends Controller
                 }
                 else
                 {
-
-                  return $this->hrm_dashboard_index();
+                    return $this->redirectToAvailableDashboard('dashboard');
                 }
 
 
@@ -268,7 +294,7 @@ class DashboardController extends Controller
         }
         else
         {
-            return $this->account_dashboard_index();
+            return $this->redirectToAvailableDashboard('project.dashboard');
         }
     }
 
@@ -387,7 +413,7 @@ class DashboardController extends Controller
             }
             else
             {
-                return $this->project_dashboard_index();
+                return $this->redirectToAvailableDashboard('hrm.dashboard');
             }
         }
         else
@@ -481,7 +507,7 @@ class DashboardController extends Controller
         }
         else
         {
-            return $this->account_dashboard_index();
+            return $this->redirectToAvailableDashboard('crm.dashboard');
         }
     }
 
@@ -510,7 +536,7 @@ class DashboardController extends Controller
         }
         else
         {
-            return $this->account_dashboard_index();
+            return $this->redirectToAvailableDashboard('pos.dashboard');
         }
     }
 

@@ -40,7 +40,7 @@
     <meta property="twitter:image" content="{{$meta_image.$meta_logo}}">
 
 
-    <link rel="icon" href="{{$logo.'/'.(isset($favicon) && !empty($favicon)?$favicon:'favicon.png')}}" type="image/x-icon" />
+    <link rel="icon" href="{{$logo.'/'.(isset($favicon) && !empty($favicon)?$favicon:'favicon.svg')}}" type="image/x-icon" />
     <link rel="stylesheet" href="{{ asset('assets/fonts/tabler-icons.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/site.css') }}" id="stylesheet">
     @if (isset($setting['cust_darklayout']) && $setting['cust_darklayout'] == 'on')
@@ -57,7 +57,7 @@
         <nav class="navbar">
             <div class="container">
                 <a class="navbar-brand" href="#">
-                    <img src="{{ $logo . '/' . (isset($company_logos) && !empty($company_logos) ? $company_logos : 'logo-light.png') }}" alt="logo" style="width: 90px">
+                    <img src="{{ $logo . '/' . (isset($company_logos) && !empty($company_logos) ? $company_logos : 'erpips.png') }}" alt="logo" style="width: 90px">
 
                 </a>
             </div>
