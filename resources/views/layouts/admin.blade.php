@@ -1,7 +1,7 @@
 @php
     use App\Models\Utility;
     //$logo=asset(Storage::url('uploads/logo/'));
-    $logo=\App\Models\Utility::get_file('uploads/logo');
+    $logo = asset('uploads/logo');
     $company_favicon=Utility::getValByName('company_favicon');
     $setting = \App\Models\Utility::colorset();
     $company_logo = \App\Models\Utility::GetLogo();
