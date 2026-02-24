@@ -37,7 +37,7 @@
             @if(\Auth::user()->type != 'client')
                 <ul class="dash-navbar">
                     <!--------------------- Start Dashboard ----------------------------------->
-                    @if( Gate::check('show hrm dashboard') || Gate::check('show project dashboard') || Gate::check('show account dashboard') || Gate::check('show crm dashboard') || Gate::check('show pos dashboard'))
+                    @if((\Auth::user()->show_hrm() == 1 && Gate::check('show hrm dashboard')) || (\Auth::user()->show_project() == 1 && Gate::check('show project dashboard')) || (\Auth::user()->show_account() == 1 && Gate::check('show account dashboard')) || (\Auth::user()->show_crm() == 1 && Gate::check('show crm dashboard')) || (\Auth::user()->show_pos() == 1 && Gate::check('show pos dashboard')))
                         <li class="dash-item dash-hasmenu
                                 {{ ( Request::segment(1) == null ||Request::segment(1) == 'account-dashboard' || Request::segment(1) == 'income report'
                                    || Request::segment(1) == 'report' || Request::segment(1) == 'reports-payroll' || Request::segment(1) == 'reports-leave'

@@ -349,6 +349,7 @@ Route::group(['middleware' => ['verified']], function () {
         Route::delete('webhook-settings/{wid}', [SystemController::class, 'webhookDestroy'])->name('webhook.destroy')->middleware(['auth','XSS']);
 
         Route::post('cookie-setting', [SystemController::class, 'saveCookieSettings'])->name('cookie.setting');
+        Route::post('feature-setting', [SystemController::class, 'saveFeatureSettings'])->name('feature.setting');
 
         Route::post('cache-settings', [SystemController::class, 'cacheSettingStore'])->name('cache.settings.store')->middleware(['auth', 'XSS']);
 
@@ -763,6 +764,7 @@ Route::group(['middleware' => ['verified']], function () {
 
     Route::get('user/{id}/plan', [UserController::class, 'upgradePlan'])->name('plan.upgrade')->middleware(['auth', 'XSS']);
     Route::get('user/{id}/plan/{pid}', [UserController::class, 'activePlan'])->name('plan.active')->middleware(['auth', 'XSS']);
+    Route::post('user/{id}/feature-settings', [UserController::class, 'updateCompanyFeatures'])->name('user.feature.settings')->middleware(['auth', 'XSS']);
     Route::get('/{uid}/notification/seen', [UserController::class, 'notificationSeen'])->name('notification.seen');
 
 
@@ -1584,4 +1586,3 @@ Route::group(['middleware' => ['verified']], function () {
 });
 
 Route::any('/cookie-consent', [SystemController::class,'CookieConsent'])->name('cookie-consent');
-

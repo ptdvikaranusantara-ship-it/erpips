@@ -183,6 +183,11 @@ class Utility extends Model
             'strictly_cookie_description'=>'These cookies are essential for the proper functioning of my website. Without these cookies, the website would not work properly',
             'more_information_description'=>'For any queries in relation to our policy on cookies and your choices, please contact us',
             'contactus_url'=>'#',
+            'feature_account' => 'on',
+            'feature_hrm' => 'on',
+            'feature_crm' => 'on',
+            'feature_project' => 'on',
+            'feature_pos' => 'on',
 
 
 
@@ -347,6 +352,11 @@ class Utility extends Model
             'strictly_cookie_description'=>'These cookies are essential for the proper functioning of my website. Without these cookies, the website would not work properly',
             'more_information_description'=>'For any queries in relation to our policy on cookies and your choices, please contact us',
             'contactus_url'=>'#',
+            'feature_account' => 'on',
+            'feature_hrm' => 'on',
+            'feature_crm' => 'on',
+            'feature_project' => 'on',
+            'feature_pos' => 'on',
 
         ];
 
@@ -3479,6 +3489,58 @@ class Utility extends Model
 
 
     //start for cookie settings
+    public static function getCompanyFeatureSettings($companyId = null)
+    {
+        if(empty($companyId))
+        {
+            $companyId = Auth::check() ? Auth::user()->creatorId() : 1;
+        }
+
+        $keys = ['feature_account', 'feature_hrm', 'feature_crm', 'feature_project', 'feature_pos'];
+        $data = DB::table('settings')->where('created_by', $companyId)->whereIn('name', $keys)->get();
+
+        if($data->count() == 0 && $companyId != 1)
+        {
+            $data = DB::table('settings')->where('created_by', 1)->whereIn('name', $keys)->get();
+        }
+
+        $settings = [
+            'feature_account' => 'on',
+            'feature_hrm' => 'on',
+            'feature_crm' => 'on',
+            'feature_project' => 'on',
+            'feature_pos' => 'on',
+        ];
+
+        foreach($data as $row)
+        {
+            $settings[$row->name] = $row->value;
+        }
+
+        return $settings;
+    }
+
+    public static function isModuleEnabled($module, $companyId = null)
+    {
+        $module = strtolower((string) $module);
+        $map = [
+            'account' => 'feature_account',
+            'hrm' => 'feature_hrm',
+            'crm' => 'feature_crm',
+            'project' => 'feature_project',
+            'pos' => 'feature_pos',
+        ];
+
+        if(!isset($map[$module]))
+        {
+            return false;
+        }
+
+        $settings = self::getCompanyFeatureSettings($companyId);
+
+        return (($settings[$map[$module]] ?? 'off') === 'on');
+    }
+
     public static function getCookieSetting()
     {
 
@@ -3532,6 +3594,4 @@ class Utility extends Model
 
 
 }
-
-
 

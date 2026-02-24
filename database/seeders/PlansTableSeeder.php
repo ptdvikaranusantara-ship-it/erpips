@@ -13,7 +13,8 @@ class PlansTableSeeder extends Seeder
      */
     public function run()
     {
-        Plan::create(
+        Plan::updateOrCreate(
+            ['name' => 'Free Plan'],
             [
                 'name' => 'Free Plan',
                 'price' => 0,

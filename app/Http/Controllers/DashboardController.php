@@ -79,7 +79,7 @@ class DashboardController extends Controller
             }
             else
             {
-                if(\Auth::user()->can('show account dashboard'))
+                if(\Auth::user()->can('show account dashboard') && \Auth::user()->show_account() == 1)
                 {
                 $data['latestIncome']  = Revenue::where('created_by', '=', \Auth::user()->creatorId())->orderBy('id', 'desc')->limit(5)->get();
                 $data['latestExpense'] = Payment::where('created_by', '=', \Auth::user()->creatorId())->orderBy('id', 'desc')->limit(5)->get();
@@ -176,7 +176,7 @@ class DashboardController extends Controller
     public function project_dashboard_index()
     {
         $user = Auth::user();
-        if(\Auth::user()->can('show project dashboard'))
+        if(\Auth::user()->can('show project dashboard') && \Auth::user()->show_project() == 1)
         {
             if($user->type == 'admin')
             {
@@ -277,7 +277,7 @@ class DashboardController extends Controller
         if(Auth::check())
         {
 
-            if(\Auth::user()->can('show hrm dashboard'))
+            if(\Auth::user()->can('show hrm dashboard') && \Auth::user()->show_hrm() == 1)
             {
 
                 $user = Auth::user();
@@ -418,7 +418,7 @@ class DashboardController extends Controller
     public function crm_dashboard_index()
     {
         $user = Auth::user();
-        if(\Auth::user()->can('show crm dashboard'))
+        if(\Auth::user()->can('show crm dashboard') && \Auth::user()->show_crm() == 1)
         {
             if($user->type == 'admin')
             {
@@ -488,7 +488,7 @@ class DashboardController extends Controller
     public function pos_dashboard_index()
     {
         $user = Auth::user();
-        if(\Auth::user()->can('show pos dashboard'))
+        if(\Auth::user()->can('show pos dashboard') && \Auth::user()->show_pos() == 1)
         {
             if($user->type == 'admin')
             {

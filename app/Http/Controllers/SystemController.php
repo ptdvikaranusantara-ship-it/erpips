@@ -1853,6 +1853,33 @@ class SystemController extends Controller
             return redirect()->back()->with('success', 'Cookie setting successfully saved.');
         }
 
+    public function saveFeatureSettings(Request $request)
+    {
+        if(\Auth::user()->can('manage company settings'))
+        {
+            $features = ['feature_account', 'feature_hrm', 'feature_crm', 'feature_project', 'feature_pos'];
+            $createdBy = \Auth::user()->creatorId();
+
+            foreach($features as $feature)
+            {
+                $value = $request->has($feature) ? 'on' : 'off';
+                \DB::insert(
+                    'insert into settings (`value`, `name`,`created_by`,`created_at`,`updated_at`) values (?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE `value` = VALUES(`value`), `updated_at` = VALUES(`updated_at`)', [
+                        $value,
+                        $feature,
+                        $createdBy,
+                        date('Y-m-d H:i:s'),
+                        date('Y-m-d H:i:s'),
+                    ]
+                );
+            }
+
+            return redirect()->back()->with('success', __('Feature setting successfully saved.'));
+        }
+
+        return redirect()->back()->with('error', __('Permission denied.'));
+    }
+
     public function CookieConsent(Request $request)
     {
 
@@ -1863,10 +1890,14 @@ class SystemController extends Controller
             $levels = array_filter($request['cookie'], function($level) use ($allowed_levels) {
                 return in_array($level, $allowed_levels);
             });
-            $whichbrowser = new \WhichBrowser\Parser($_SERVER['HTTP_USER_AGENT']);
-            // Generate new CSV line
-            $browser_name = $whichbrowser->browser->name ?? null;
-            $os_name = $whichbrowser->os->name ?? null;
+            $browser_name = null;
+            $os_name = null;
+            if(class_exists(\WhichBrowser\Parser::class))
+            {
+                $whichbrowser = new \WhichBrowser\Parser($_SERVER['HTTP_USER_AGENT']);
+                $browser_name = $whichbrowser->browser->name ?? null;
+                $os_name = $whichbrowser->os->name ?? null;
+            }
             $browser_language = isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) ? mb_substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2) : null;
             $device_type = Utility::get_device_type($_SERVER['HTTP_USER_AGENT']);
 

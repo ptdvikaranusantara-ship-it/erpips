@@ -93,6 +93,7 @@
                                     {{ (!empty($user->last_login_at)) ? $user->last_login_at : '' }}
                                 </div>
                                 @if(\Auth::user()->type == 'super admin')
+                                    @php($featureSettings = $featureSettingsByCompany[$user->id] ?? ['feature_account' => 'on', 'feature_hrm' => 'on', 'feature_crm' => 'on', 'feature_project' => 'on', 'feature_pos' => 'on'])
                                     <div class="mt-4">
                                         <div class="row justify-content-between align-items-center">
                                             <div class="col-6 text-center">
@@ -107,6 +108,54 @@
                                             </div>
                                             <div class="col-12 text-center pb-2">
                                                 <span class="text-dark text-xs">{{__('Plan Expired : ') }} {{!empty($user->plan_expire_date) ? \Auth::user()->dateFormat($user->plan_expire_date): __('Unlimited')}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-3">
+                                        <div class="col-12">
+                                            <div class="card mb-0">
+                                                <div class="card-body p-3 text-start">
+                                                    <h6 class="mb-2">{{ __('Feature Access') }}</h6>
+                                                    <form method="POST" action="{{ route('user.feature.settings', $user->id) }}">
+                                                        @csrf
+                                                        <div class="row">
+                                                            <div class="col-6">
+                                                                <div class="form-check form-switch custom-switch-v1">
+                                                                    <input type="checkbox" class="form-check-input input-primary" id="feature_account_{{ $user->id }}" name="feature_account" {{ ($featureSettings['feature_account'] ?? 'on') == 'on' ? 'checked' : '' }}>
+                                                                    <label class="form-check-label" for="feature_account_{{ $user->id }}">{{ __('Accounting') }}</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-6">
+                                                                <div class="form-check form-switch custom-switch-v1">
+                                                                    <input type="checkbox" class="form-check-input input-primary" id="feature_hrm_{{ $user->id }}" name="feature_hrm" {{ ($featureSettings['feature_hrm'] ?? 'on') == 'on' ? 'checked' : '' }}>
+                                                                    <label class="form-check-label" for="feature_hrm_{{ $user->id }}">{{ __('HRM') }}</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-6 mt-2">
+                                                                <div class="form-check form-switch custom-switch-v1">
+                                                                    <input type="checkbox" class="form-check-input input-primary" id="feature_crm_{{ $user->id }}" name="feature_crm" {{ ($featureSettings['feature_crm'] ?? 'on') == 'on' ? 'checked' : '' }}>
+                                                                    <label class="form-check-label" for="feature_crm_{{ $user->id }}">{{ __('CRM') }}</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-6 mt-2">
+                                                                <div class="form-check form-switch custom-switch-v1">
+                                                                    <input type="checkbox" class="form-check-input input-primary" id="feature_project_{{ $user->id }}" name="feature_project" {{ ($featureSettings['feature_project'] ?? 'on') == 'on' ? 'checked' : '' }}>
+                                                                    <label class="form-check-label" for="feature_project_{{ $user->id }}">{{ __('Project') }}</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-6 mt-2">
+                                                                <div class="form-check form-switch custom-switch-v1">
+                                                                    <input type="checkbox" class="form-check-input input-primary" id="feature_pos_{{ $user->id }}" name="feature_pos" {{ ($featureSettings['feature_pos'] ?? 'on') == 'on' ? 'checked' : '' }}>
+                                                                    <label class="form-check-label" for="feature_pos_{{ $user->id }}">{{ __('POS') }}</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-12 mt-3 text-end">
+                                                                <button type="submit" class="btn btn-sm btn-primary">{{ __('Save Features') }}</button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

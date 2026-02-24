@@ -34,16 +34,42 @@ class UserController extends Controller
         $user = \Auth::user();
         if(\Auth::user()->can('manage user'))
         {
+            $featureSettingsByCompany = [];
             if(\Auth::user()->type == 'super admin')
             {
                 $users = User::where('created_by', '=', $user->creatorId())->where('type', '=', 'company')->get();
+
+                $companyIds = $users->pluck('id')->all();
+                if(!empty($companyIds))
+                {
+                    $rows = DB::table('settings')
+                        ->whereIn('created_by', $companyIds)
+                        ->whereIn('name', ['feature_account', 'feature_hrm', 'feature_crm', 'feature_project', 'feature_pos'])
+                        ->get(['created_by', 'name', 'value']);
+
+                    foreach($companyIds as $companyId)
+                    {
+                        $featureSettingsByCompany[$companyId] = [
+                            'feature_account' => 'on',
+                            'feature_hrm' => 'on',
+                            'feature_crm' => 'on',
+                            'feature_project' => 'on',
+                            'feature_pos' => 'on',
+                        ];
+                    }
+
+                    foreach($rows as $row)
+                    {
+                        $featureSettingsByCompany[$row->created_by][$row->name] = $row->value;
+                    }
+                }
             }
             else
             {
                 $users = User::where('created_by', '=', $user->creatorId())->where('type', '!=', 'client')->get();
             }
 
-            return view('user.index')->with('users', $users);
+            return view('user.index', compact('users', 'featureSettingsByCompany'));
         }
         else
         {
@@ -556,6 +582,37 @@ class UserController extends Controller
             return redirect()->back()->with('error', 'Plan fail to upgrade.');
         }
 
+    }
+
+    public function updateCompanyFeatures(Request $request, $user_id)
+    {
+        if(!\Auth::check() || \Auth::user()->type != 'super admin')
+        {
+            return redirect()->back()->with('error', __('Permission denied.'));
+        }
+
+        $company = User::where('id', $user_id)->where('type', 'company')->first();
+        if(empty($company))
+        {
+            return redirect()->back()->with('error', __('Company not found.'));
+        }
+
+        $features = ['feature_account', 'feature_hrm', 'feature_crm', 'feature_project', 'feature_pos'];
+        foreach($features as $feature)
+        {
+            $value = $request->has($feature) ? 'on' : 'off';
+            DB::insert(
+                'insert into settings (`value`, `name`,`created_by`,`created_at`,`updated_at`) values (?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE `value` = VALUES(`value`), `updated_at` = VALUES(`updated_at`)', [
+                    $value,
+                    $feature,
+                    $company->id,
+                    date('Y-m-d H:i:s'),
+                    date('Y-m-d H:i:s'),
+                ]
+            );
+        }
+
+        return redirect()->back()->with('success', __('Feature setting successfully updated.'));
     }
 
     public function userPassword($id)

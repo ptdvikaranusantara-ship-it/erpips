@@ -132,9 +132,13 @@ class AuthenticatedSessionController extends Controller
             $ip = $_SERVER['REMOTE_ADDR']; // your ip address here
             $query = @unserialize(file_get_contents('http://ip-api.com/php/' . $ip));
 
-            $whichbrowser = new \WhichBrowser\Parser($_SERVER['HTTP_USER_AGENT']);
-            if ($whichbrowser->device->type == 'bot') {
-                return;
+            $whichbrowser = null;
+            if(class_exists(\WhichBrowser\Parser::class))
+            {
+                $whichbrowser = new \WhichBrowser\Parser($_SERVER['HTTP_USER_AGENT']);
+                if (($whichbrowser->device->type ?? null) == 'bot') {
+                    return;
+                }
             }
             $referrer = isset($_SERVER['HTTP_REFERER']) ? parse_url($_SERVER['HTTP_REFERER']) : null;
 

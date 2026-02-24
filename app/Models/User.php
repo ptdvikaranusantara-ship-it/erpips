@@ -958,79 +958,29 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public static function show_crm()
     {
-        $user_type = \Auth::user()->type;
-
-        if($user_type == 'company' || $user_type == 'super admin')
-        {
-            $user = User::where('id', \Auth::user()->id)->first();
-
-        }
-        else
-        {
-            $user = User::where('id', \Auth::user()->created_by)->first();
-        }
-
-        return !empty($user->plan)?Plan::find($user->plan)->crm:'';
+        return Utility::isModuleEnabled('crm', \Auth::user()->creatorId()) ? 1 : 0;
     }
 
     public static function show_hrm()
     {
-        $user_type = \Auth::user()->type;
-        if($user_type == 'company' || $user_type == 'super admin')
-        {
-            $user = User::where('id', \Auth::user()->id)->first();
-        }
-        else
-        {
-            $user = User::where('id', \Auth::user()->created_by)->first();
-        }
-
-        return !empty($user->plan)?Plan::find($user->plan)->hrm:'';
+        return Utility::isModuleEnabled('hrm', \Auth::user()->creatorId()) ? 1 : 0;
 
     }
 
     public static function show_account()
     {
-        $user_type = \Auth::user()->type;
-        if($user_type == 'company' || $user_type == 'super admin')
-        {
-            $user = User::where('id', \Auth::user()->id)->first();
-        }
-        else
-        {
-            $user = User::where('id', \Auth::user()->created_by)->first();
-        }
-
-        return !empty($user->plan)?Plan::find($user->plan)->account:'';
+        return Utility::isModuleEnabled('account', \Auth::user()->creatorId()) ? 1 : 0;
     }
 
     public static function show_project()
     {
-        $user_type = \Auth::user()->type;
-        if($user_type == 'company' || $user_type == 'super admin')
-        {
-            $user = User::where('id', \Auth::user()->id)->first();
-        }
-        else
-        {
-            $user = User::where('id', \Auth::user()->created_by)->first();
-        }
-        return !empty($user->plan)?Plan::find($user->plan)->project:'';
+        return Utility::isModuleEnabled('project', \Auth::user()->creatorId()) ? 1 : 0;
 
     }
 
     public static function show_pos()
     {
-        $user_type = \Auth::user()->type;
-        if($user_type == 'company' || $user_type == 'super admin')
-        {
-            $user = User::where('id', \Auth::user()->id)->first();
-        }
-        else
-        {
-            $user = User::where('id', \Auth::user()->created_by)->first();
-        }
-        return !empty($user->plan)?Plan::find($user->plan)->pos:'';
+        return Utility::isModuleEnabled('pos', \Auth::user()->creatorId()) ? 1 : 0;
 
     }
 

@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Plan;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -13,7 +15,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call(PlansTableSeeder::class);
-        $this->call(UsersTableSeeder::class);
+        if(!Plan::where('name', 'Free Plan')->exists())
+        {
+            $this->call(PlansTableSeeder::class);
+        }
+
+        if(!User::where('email', 'superadmin@example.com')->exists())
+        {
+            $this->call(UsersTableSeeder::class);
+        }
     }
 }

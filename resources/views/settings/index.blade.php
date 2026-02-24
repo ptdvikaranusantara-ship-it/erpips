@@ -299,6 +299,8 @@
                                 <div class="float-end"><i class="ti ti-chevron-right"></i></div></a>
                             <a href="#seo-settings" class="list-group-item list-group-item-action border-0">{{ __('SEO Settings') }}
                                 <div class="float-end"><i class="ti ti-chevron-right"></i></div></a>
+                            <a href="#feature-settings" class="list-group-item list-group-item-action border-0">{{ __('Feature Settings') }}
+                                <div class="float-end"><i class="ti ti-chevron-right"></i></div></a>
                             <a href="#cookie-settings" class="list-group-item list-group-item-action border-0">{{ __('Cookie Settings') }}
                                 <div class="float-end"><i class="ti ti-chevron-right"></i></div></a>
                             <a href="#cache-settings" class="list-group-item list-group-item-action border-0">{{ __('Cache Settings') }}
@@ -1948,6 +1950,53 @@
                         </div>
                     </div>
 
+                    {{-- Feature settings --}}
+                    <div class="card" id="feature-settings">
+                        {{ Form::model($settings, ['route' => 'feature.setting', 'method' => 'post']) }}
+                        <div class="card-header">
+                            <h5>{{ __('Feature Settings') }}</h5>
+                            <small class="text-secondary">{{ __('Enable or disable modules for this company.') }}</small>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <div class="form-check form-switch custom-switch-v1">
+                                        <input type="checkbox" name="feature_account" class="form-check-input input-primary" id="feature_account" {{ ($settings['feature_account'] ?? 'on') == 'on' ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="feature_account">{{ __('Accounting Module') }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="form-check form-switch custom-switch-v1">
+                                        <input type="checkbox" name="feature_hrm" class="form-check-input input-primary" id="feature_hrm" {{ ($settings['feature_hrm'] ?? 'on') == 'on' ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="feature_hrm">{{ __('HRM Module') }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="form-check form-switch custom-switch-v1">
+                                        <input type="checkbox" name="feature_crm" class="form-check-input input-primary" id="feature_crm" {{ ($settings['feature_crm'] ?? 'on') == 'on' ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="feature_crm">{{ __('CRM Module') }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="form-check form-switch custom-switch-v1">
+                                        <input type="checkbox" name="feature_project" class="form-check-input input-primary" id="feature_project" {{ ($settings['feature_project'] ?? 'on') == 'on' ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="feature_project">{{ __('Project Module') }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-1">
+                                    <div class="form-check form-switch custom-switch-v1">
+                                        <input type="checkbox" name="feature_pos" class="form-check-input input-primary" id="feature_pos" {{ ($settings['feature_pos'] ?? 'on') == 'on' ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="feature_pos">{{ __('POS Module') }}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer text-end">
+                            <input class="btn btn-print-invoice btn-primary" type="submit" value="{{ __('Save Changes') }}">
+                        </div>
+                        {{ Form::close() }}
+                    </div>
+
                     {{-- Cookie settings --}}
                     <div class="card" id="cookie-settings">
 
@@ -2064,6 +2113,5 @@
         </div>
     </div>
 @endsection
-
 
 
