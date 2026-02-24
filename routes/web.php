@@ -1558,3 +1558,4 @@ Route::group(['middleware' => ['verified']], function () {
 });
 
 Route::any('/cookie-consent', [SystemController::class,'CookieConsent'])->name('cookie-consent');
+
